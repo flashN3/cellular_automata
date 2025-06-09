@@ -2,8 +2,8 @@
 #include <stdio.h>
 #include <grid.h>
 
-constexpr int screen_width{ 720 };
-constexpr int screen_height{ 480 };
+constexpr int screen_width{ 1920 };
+constexpr int screen_height{ 1080 };
 
 SDL_Window* window{ nullptr };
 SDL_Renderer* renderer{ nullptr };
@@ -30,8 +30,10 @@ int main() {
         return 1;
         }
 
+    
     Grid grid;
-    grid_init(&grid, 720, 480);
+    grid_init(&grid, screen_width / 8.0f, screen_height / 8.0f);
+
 
     bool is_running = true;
     while (is_running)
@@ -51,6 +53,8 @@ int main() {
         grid_render(&grid, renderer);
 
         SDL_RenderPresent(renderer);
+
+        SDL_Delay(64);
 
     }
     

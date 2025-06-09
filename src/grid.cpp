@@ -2,12 +2,12 @@
 
 internal void grid_set_cell(Grid* grid, int x, int y, u8 value)
 {
-    grid->next_state[grid->width * y + x] = value;
+    grid->next_state[grid->width * y + x].alive = value;
 }
 
 internal void grid_set_cell_current(Grid* grid, int x, int y, u8 value)
 {
-    grid->current_state[grid->width * y + x] = value;
+    grid->current_state[grid->width * y + x].alive = value;
 }
 
 void grid_init(Grid *grid, int width, int height)
@@ -16,11 +16,11 @@ void grid_init(Grid *grid, int width, int height)
     grid->height = height;
 
     int total_cells = width * height;
-    grid->current_state = (u8*)malloc(total_cells);
-    grid->next_state = (u8*)malloc(total_cells);
+    grid->current_state = (Cell*)malloc(total_cells * sizeof(Cell));
+    grid->next_state = (Cell*)malloc(total_cells * sizeof(Cell));
 
-    memset(grid->current_state, 0, total_cells);
-    memset(grid->next_state, 0, total_cells);
+    memset(grid->current_state, 0, total_cells * sizeof(Cell));
+    memset(grid->next_state, 0, total_cells * sizeof(Cell));
 
      // Glider 1 (southeast)
     grid_set_cell_current(grid, 10, 10, 1);
@@ -60,15 +60,14 @@ void grid_init(Grid *grid, int width, int height)
     grid_set_cell_current(grid, 33, 26, 1);
 }
 
-u8 grid_get_cell(Grid *grid, int x, int y)
+Cell grid_get_cell(Grid *grid, int x, int y)
 {
     return grid->current_state[y * grid->width + x];
 }
 
-
 internal void grid_swap_buffers(Grid *grid)
 {
-    u8* temp = grid->current_state;
+    Cell* temp = grid->current_state;
     grid->current_state = grid->next_state;
     grid->next_state = temp;
 }
@@ -81,9 +80,9 @@ internal int grid_count_neighbours(Grid* grid, int x, int y) {
 
             if (dx == 0 && dy == 0) continue;
 
-            int nx = (x + dx) % grid->width;
-            int ny = (y + dy) % grid->height;
-            count += grid_get_cell(grid, nx, ny);
+            int nx = (x + dx + grid->width) % grid->width;
+            int ny = (y + dy + grid->height) % grid->height;
+            count += grid_get_cell(grid, nx, ny).alive;
         }
     }
 
@@ -95,10 +94,10 @@ void grid_update(Grid* grid)
     for (int y = 0; y < grid->height; y++) {
         for (int x = 0; x < grid->width; x++) {
 
-            u8 current = grid_get_cell(grid, x, y);
+            Cell current = grid_get_cell(grid, x, y);
             int num_neighbours = grid_count_neighbours(grid, x, y);
             
-            if (current) {
+            if (current.alive) {
                 int value = (num_neighbours == 2 || num_neighbours == 3) ? 1 : 0;
                 grid_set_cell(grid, x, y, value);
             } else {
@@ -122,9 +121,9 @@ void grid_render(Grid* grid, SDL_Renderer* renderer) {
             int screen_x = x * cell_size;
             int screen_y = y * cell_size;
 
-            u8 cell_alive = grid_get_cell(grid, x, y);
+            Cell cell = grid_get_cell(grid, x, y);
 
-            if (cell_alive) {
+            if (cell.alive) {
                 SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
             } else {
                 SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);

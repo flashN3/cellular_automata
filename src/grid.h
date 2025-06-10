@@ -17,6 +17,12 @@ struct Grid {
     Cell* next_state;
 };
 
+struct Pattern {
+    int width;
+    int height;
+    Cell* cells;
+};
+
 void grid_init(Grid* grid, int width, int height);
 Cell grid_get_cell(Grid* grid, int x, int y);
 

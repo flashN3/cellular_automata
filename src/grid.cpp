@@ -192,8 +192,8 @@ void grid_render(Grid* grid, SDL_Renderer* renderer, const Camera* camera) {
         for (int x = camera->x; x < camera->width; x++) {
 
             float cell_size = 8.0f;
-            int screen_x = x * cell_size;
-            int screen_y = y * cell_size;
+            int screen_x = (x - camera->x) * cell_size;
+            int screen_y = (y - camera->y) * cell_size;
 
             Cell cell = grid_get_cell(grid, x, y);
 

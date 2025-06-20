@@ -57,7 +57,6 @@ int main() {
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderClear(renderer);
 
-        // 
         camera_update(&camera);
 
         grid_update(&grid);

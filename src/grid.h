@@ -5,6 +5,7 @@
 #include <cstring>
 #include <SDL3/SDL.h>
 #include "common.h"
+#include "camera.h"
 
 struct Cell {
     u8 alive;
@@ -27,4 +28,4 @@ void grid_init(Grid* grid, int width, int height);
 Cell grid_get_cell(Grid* grid, int x, int y);
 
 void grid_update(Grid* grid);
-void grid_render(Grid* grid, SDL_Renderer* renderer);
+void grid_render(Grid* grid, SDL_Renderer* renderer, const Camera* camera);

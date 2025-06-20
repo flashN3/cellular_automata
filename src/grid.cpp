@@ -129,6 +129,7 @@ void grid_init(Grid *grid, int width, int height)
 
     grid_place_pattern(grid, &pattern, 100, 50);
     grid_place_pattern(grid, &pattern, 20, 20);
+    grid_place_pattern(grid, &pattern, 160, 20);
 }
 
 Cell grid_get_cell(Grid *grid, int x, int y)
@@ -184,11 +185,11 @@ void grid_update(Grid* grid)
     grid_swap_buffers(grid);
 }
 
-void grid_render(Grid* grid, SDL_Renderer* renderer) {
+void grid_render(Grid* grid, SDL_Renderer* renderer, const Camera* camera) {
 
-    for (int y = 0; y < grid->height; y++) {
-
-        for (int x = 0; x < grid->width; x++) {
+    // Render only the part the camera can see
+    for (int y = camera->y; y < camera->height; y++) {
+        for (int x = camera->x; x < camera->width; x++) {
 
             float cell_size = 8.0f;
             int screen_x = x * cell_size;

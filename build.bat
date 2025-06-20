@@ -8,6 +8,7 @@ cl /nologo /Zi /FC /W4 ^
    /I"C:/vcpkg/installed/x64-windows/include" ^
    ..\src\main.cpp ^
    ..\src\grid.cpp ^
+   ..\src\camera.cpp ^
    /link SDL3.lib ^
    /LIBPATH:"C:/vcpkg/installed/x64-windows/lib" ^
    /SUBSYSTEM:CONSOLE ^

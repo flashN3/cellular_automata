@@ -1,6 +1,7 @@
 #include <SDL3/SDL.h>
 #include <stdio.h>
 #include <grid.h>
+#include "camera.h"
 
 constexpr int screen_width{ 1920 };
 constexpr int screen_height{ 1080 };
@@ -30,9 +31,16 @@ int main() {
         return 1;
         }
 
+
+    Camera camera{};
+    camera.x = 0;
+    camera.y = 0;
+    camera.height = screen_height / 8.0f;
+    camera.width = screen_width / 8.0f;
+
     
     Grid grid;
-    grid_init(&grid, screen_width / 8.0f, screen_height / 8.0f);
+    grid_init(&grid, 2 * screen_width / 8.0f, 2 * screen_height / 8.0f);
 
 
     bool is_running = true;
@@ -49,8 +57,11 @@ int main() {
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderClear(renderer);
 
+        // 
+        camera_update(&camera);
+
         grid_update(&grid);
-        grid_render(&grid, renderer);
+        grid_render(&grid, renderer, &camera);
 
         SDL_RenderPresent(renderer);
 

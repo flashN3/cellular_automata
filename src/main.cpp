@@ -38,6 +38,7 @@ int main() {
     camera.height = screen_height / 8.0f;
     camera.width = screen_width / 8.0f;
 
+    camera_update(camera);
     
     Grid grid;
     grid_init(&grid, 2 * screen_width / 8.0f, 2 * screen_height / 8.0f);
@@ -53,6 +54,7 @@ int main() {
                 is_running = false;
             }
         }
+
 
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderClear(renderer);

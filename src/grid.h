@@ -18,6 +18,10 @@ struct Grid {
     Cell* next_state;
 };
 
+struct Chunk {
+    bool hasAliveCells;
+};
+
 struct Pattern {
     int width;
     int height;
